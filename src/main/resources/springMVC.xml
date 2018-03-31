@@ -1,0 +1,51 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!--开启扫描 -->
+	<context:component-scan base-package="controller" />
+
+	<!--注解驱动 -->
+	<mvc:annotation-driven>
+		<!--开启json数据转化功能：测试通过 -->
+		<mvc:message-converters register-defaults="true">
+			<bean name="jackson2HttpMessageConverter"
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+			<!-- 支持返回json(避免IE在ajax请求时，返回json出现下载 ) -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!--配置静态资源处理器 -->
+	<mvc:default-servlet-handler />
+
+	<!--配置视图解析器：用于错误页面转发 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/error/" />
+		<property name="suffix" value=".html" />
+	</bean>
+
+	<!--配置文件上传组件：使用三方jar包：commons，不使用servlet自带的文件上传功能 -->
+	<bean name="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<!--内存里面不存储，全部写入磁盘 -->
+		<property name="maxInMemorySize" value="0" />
+		<!--每个文件最大10M左右 -->
+		<property name="maxUploadSizePerFile" value="10000000" />
+		<!--总计上传文件大小50M左右 -->
+		<property name="maxUploadSize" value="50000000" />
+	</bean>
+
+</beans>

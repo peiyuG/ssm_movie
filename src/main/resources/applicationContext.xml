@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+
+     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+     http://www.springframework.org/schema/cache
+     http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+     http://www.springframework.org/schema/task
+     http://www.springframework.org/schema/task/spring-task-4.1.xsd">
+
+	<!--配置包扫描 -->
+	<context:component-scan base-package="dao" />
+	<context:component-scan base-package="service" />
+	<context:component-scan base-package="commons" />
+
+	<!--开启定时任务的驱动 -->
+	<task:annotation-driven />
+
+	<context:property-placeholder location="classpath:dataSource/mysqldb.properties" />
+	<!--配置运行环境的数据源 -->
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="user" value="${jdbc.username}" />
+	</bean>
+	<!--配置mybatis的sqlsessionfactorybean -->
+	<bean name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis.xml" />
+		<!--注意这个位置，在类路径下面 -->
+		<property name="mapperLocations" value="classpath:mybatis/*/*.xml" />
+	</bean>
+	<!--开启mapper扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="dao" />
+	</bean>
+
+	<!--配置数aop事物 -->
+	<bean name="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!--配置事物通知 -->
+	<tx:advice id="transactionInterceptor" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="delete*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="modify*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="update*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="find*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+			<tx:method name="get*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+			<tx:method name="select*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+			<tx:method name="check*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!--植入通知 -->
+	<aop:config>
+		<!--切点的目标可能会改变 -->
+		<aop:pointcut id="servicePiontCut"
+			expression="execution(* service.*.*.*ServiceImpl.*(..))" />
+		<aop:advisor advice-ref="transactionInterceptor"
+			pointcut-ref="servicePiontCut" />
+	</aop:config>
+
+	<!--注解驱动启用事物 -->
+	<!--<tx:annotation-driven transaction-manager="transactionManager"/> -->
+</beans>
