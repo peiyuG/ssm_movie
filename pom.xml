@@ -23,6 +23,7 @@
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
 	<url>http://maven.apache.org</url>
+
 	<dependencies>
 		<!-- mybatis核心包 -->
 		<dependency>
@@ -60,7 +61,7 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- 日志文件管理包 -->
 		<!-- log start -->
 		<dependency>
@@ -205,8 +206,15 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.4.1.Final</version>
 		</dependency>
-	</dependencies>
 
+        <!-- pagehelper分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>5.1.2</version>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<finalName>ssm_movie</finalName>
 		<plugins>
