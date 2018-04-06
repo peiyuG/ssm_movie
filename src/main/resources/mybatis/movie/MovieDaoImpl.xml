@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.movie.MovieDao">
+
+	<!-- 根据不同类型查询电影数据 （片库搜索） -->
+	<select id="getMovieByDifferentType" resultMap="MovieDaoMap">
+		select
+		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
+		from t_movie
+		<where>
+			<if test='category!=null and category!=""'>
+				and category REGEXP #{category}
+			</if>
+			<if test='country!=null and country!=""'>
+				and country=#{country}
+			</if>
+			<if test='release_time!=null and release_time!=""'>
+				and release_time=#{release_time}
+			</if>
+			<if test='is_vip_movie==1 and is_vip_movie==0'>
+				and is_vip_movie=#{is_vip_movie}
+			</if>
+		</where>
+		<if test='otherType=="最近热播" and otherType!=null and otherType!=""'>
+			order by click_volume desc
+		</if>
+		<if test='otherType=="豆瓣好评" and otherType!=null and otherType!=""'>
+			order by score desc
+		</if>
+	</select>
+
+	<!--根据电影名搜索（全网搜先实现站内搜索） -->
+	<select id="getMovieByname" resultMap="MovieDaoMap">
+		select
+		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
+		from t_movie where name REGEXP #{name}
+	</select>
+
+	<!-- 返回点击量最大的前十条，用于最近热搜 -->
+	<select id="getRanklist" resultMap="MovieDaoMap">
+		select
+		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
+		from t_movie order by click_volume desc limit 10
+	</select>
+
+	<!-- 根据电影ID查询到该电影所有信息 -->
+	<select id="getMovieByID" resultMap="MovieDaoMap">
+		select
+		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
+		from t_movie where id=#{id}
+	</select>
+
+	<resultMap id="MovieDaoMap" type="pojo.movie.MoviePojo">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="score" column="score" />
+		<result property="intro" column="intro" />
+		<result property="url" column="url" />
+		<result property="country" column="country" />
+		<result property="category" column="category" />
+		<result property="release_time" column="release_time" />
+		<result property="is_vip_movie" column="is_vip_movie" />
+		<result property="click_volume" column="click_volume" />
+	</resultMap>
+</mapper>
