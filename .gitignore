@@ -1,0 +1,17 @@
+*.class
+.classpath
+.metadata
+.settings
+.gradle
+.project
+META-INF
+build
+target
+bin
+var
+*.log
+.idea
+*.iml
+.project.
+start.bat
+.DS_Store

@@ -23,7 +23,6 @@
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
 	<url>http://maven.apache.org</url>
-
 	<dependencies>
 		<!-- mybatis核心包 -->
 		<dependency>
