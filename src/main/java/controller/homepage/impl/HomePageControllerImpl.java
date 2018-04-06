@@ -23,13 +23,13 @@ public class HomePageControllerImpl implements HomePageController {
 	@Autowired
 	private HomePageService homePageService;
 	
-	/*
-	 * 生产一个随机数作为验证码
-	 */
-	public int getVerificationCode(){
-		int x=1000+(int)(Math.random()*10000);
-		return x;
-	}
+//	/*
+//	 * 生产一个随机数作为验证码
+//	 */
+//	public int getVerificationCode(){
+//		int x=1000+(int)(Math.random()*10000);
+//		return x;
+//	}
 
 	/*
 	 * 观看历史
