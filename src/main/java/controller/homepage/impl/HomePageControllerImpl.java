@@ -38,12 +38,12 @@ public class HomePageControllerImpl implements HomePageController {
 	 */
 	@RequestMapping(value="/Watched")
 	@ResponseBody
-	public Status getWatched(HttpSession session,int userID){
+	public Status getWatched(HttpSession session){
 		User user=(User)session.getAttribute("user");		
 		if(user==null){
 			return new Status(0,"请先登录",null);
 		}
-		List<String> list=homePageService.getWatched(userID);		
+		List<String> list=homePageService.getWatched(user.getUserID());		
 		if(list!=null){
 			return new Status(1,"获取成功",list);
 		}

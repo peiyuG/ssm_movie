@@ -10,7 +10,7 @@ public interface HomePageController {
 	/*
 	 * 观看历史
 	 */
-	public Status getWatched(HttpSession session,int userID);
+	public Status getWatched(HttpSession session);
 	
 	/*
 	 * 轮播
