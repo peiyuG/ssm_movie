@@ -30,10 +30,4 @@ public interface HomePageDao {
 	
 	//根据user的id返回历史观看记录，电影名集合
 	List<String> getWatched(int userID);
-	
-	//判断是否存在用户名为user_name的用户
-	int IscontainsThisUser(@Param("user_name") String user_name);
-	
-	//修改密码
-	int updatePassword(@Param("user_password") String user_password, @Param("user_name") String user_name);
 }
