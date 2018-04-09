@@ -2,6 +2,7 @@ package controller.homepage.impl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import commons.Status;
+import commons.StringUtil;
 import controller.homepage.HomePageController;
 import pojo.movie.MoviePojo;
 import pojo.user.User;
@@ -36,12 +38,12 @@ public class HomePageControllerImpl implements HomePageController {
 	 */
 	@RequestMapping(value="/Watched")
 	@ResponseBody
-	public Status getWatched(HttpSession session,int userID){
+	public Status getWatched(HttpSession session){
 		User user=(User)session.getAttribute("user");		
 		if(user==null){
 			return new Status(0,"请先登录",null);
 		}
-		List<String> list=homePageService.getWatched(userID);		
+		List<String> list=homePageService.getWatched(user.getUserID());		
 		if(list!=null){
 			return new Status(1,"获取成功",list);
 		}
@@ -109,20 +111,21 @@ public class HomePageControllerImpl implements HomePageController {
 	 */
 	@RequestMapping(value="/logincheck")
 	@ResponseBody
-	public Status logincheck(String user_name,String user_password){
+	public Status logincheck(HttpSession session,String user_name,String user_password){
 		UserNameAndPwd userNameAndPwd=new UserNameAndPwd();
 		userNameAndPwd.setUser_name(user_name);
 		userNameAndPwd.setUser_password(user_password);
 		if(user_name==null||" ".equals(user_name)||user_password==null||" ".equals(user_password)){
 			return new Status(0,"用户名或密码为空",null);
 		}
-		if(homePageService.logincheck(userNameAndPwd)!=null){
-			return new Status(1,"登录成功",homePageService.logincheck(userNameAndPwd));
+		User user=homePageService.logincheck(userNameAndPwd);
+		if(user!=null){
+			session.setAttribute("user", user);
+			return new Status(1,"登录成功",null);
 		}
-		if(homePageService.logincheck(userNameAndPwd)==null){
+		else{
 			return new Status(0,"查无此人",null);
 		}
-		return new Status(0,"登录失败,亲",null);
 	}
 
 	/*
@@ -137,10 +140,91 @@ public class HomePageControllerImpl implements HomePageController {
 		if(user_name==null||"".equals(user_name)||user_password==null||"".equals(user_password)){
 			return new Status(0,"用户名或密码为空",null);
 		}
+		if(homePageService.IscontainsThisUser(user_name)==1){
+			return new Status(0,"该用户名已经被注册",null);
+		}
 		if(homePageService.register(userNameAndPwd)==1){
 			return new Status(1,"注册成功",null);
 		}
 		return new Status(0,"注册失败,亲",null);
 	}
 
+	/*
+	 * 找回密码的功能
+	 */
+	/*
+	 * 判断是否存在此用户
+	 */
+	@RequestMapping(value="/containsUser")
+	@ResponseBody
+	public Status containsUser(HttpServletRequest request,String user_name,String VerificationCode){
+		if(user_name==null||"".equals(user_name)){
+			return new Status(0,"用户名不能为空",null);
+		}
+		HttpSession session=request.getSession();
+		String code= StringUtil.getRandomCode(4);
+		if(homePageService.IscontainsThisUser(user_name)!=0){
+			session.setAttribute("VerificationCode",code);	
+			session.setAttribute("user_name", user_name);
+			return new Status(1,"验证码发送成功",code);
+		}
+		if(homePageService.IscontainsThisUser(user_name)==0){
+			return new Status(0,"该用户不存在",null);
+		}	
+		return new Status(0,"未知错误发生了",null);
+	}
+	
+	/*
+	 * 获得验证码
+	 */
+	@RequestMapping(value="/getVerificationCode")
+	@ResponseBody
+	public Status VerificationCode(String code,HttpSession session){
+		if (code == null || "".equals(code)) {
+			return new Status(0, "验证码未知错误", null);
+		}
+		String session_VerificationCode=session.getAttribute("VerificationCode").toString();
+		if(session_VerificationCode.equals(code)){
+			session.removeAttribute("VerificationCode");
+			return new Status(1,"验证成功",null);
+		}
+		else{
+			return new Status(0,"验证失败",null);
+		}
+	}
+
+	/*
+	 * 修改密码
+	 */
+	@RequestMapping(value="/updatePassword")
+	@ResponseBody
+	public Status updatePassword(HttpSession session,String user_password){
+		if(user_password==null||" ".equals(user_password)){
+			return new Status(0,"密码不能为空",null);
+		}
+		String user_name=session.getAttribute("user_name").toString();
+		if(homePageService.updatePassword(user_password,user_name)==1){
+			session.removeAttribute("user_name");
+			return new Status(1,"修改成功",null);
+		}
+		if(homePageService.updatePassword(user_password,user_name)==0){
+			return new Status(0,"对不起,修改失败",null);
+		}
+		return new Status(0,"未知错误发生了",null);
+	}
+	
+	/*
+	 * 退出登录
+	 */
+	@RequestMapping(value="/signout")
+	@ResponseBody
+	public Status signout(HttpSession session){
+		try{
+			session.removeAttribute("user");
+			return new Status(1,"成功退出",null);
+		}catch (Exception e) {
+			return new Status(0,"系统错误",null);
+		}
+		
+	}
 }

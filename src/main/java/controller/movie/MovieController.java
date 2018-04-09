@@ -14,25 +14,25 @@ public interface MovieController {
 	/*
 	 * 根据不同类别进行判断，返回该组类别所有电影信息（用于片库）
 	 */
-	public Status getMovieByDifferentType(Integer startPage, Integer PageSize, String category, String country,
+	Status getMovieByDifferentType(Integer startPage, Integer PageSize, String category, String country,
 			String release_time, int is_vip_movie, String otherType);
 
 	/*
 	 * 根据电影名搜索（全网搜先实现站内搜索）
 	 */
-	public Status getMovieByname(String name);
+	Status getMovieByname(String name);
 
 	/*
 	 * 返回点击量最大的前十条，用于（最近热搜）
 	 */
-	public Status getRanklist();
+	Status getRanklist();
 
 	/*
 	 * 根据电影ID返回该电影所有信息
 	 */
-	public Status getMovieByID(int id);
+	Status getMovieByID(int id);
 
-	public Status error() throws RequestStatusException;
+	Status error() throws RequestStatusException;
 
-	public void setMovieService(MovieService movieService);
+	void setMovieService(MovieService movieService);
 }
