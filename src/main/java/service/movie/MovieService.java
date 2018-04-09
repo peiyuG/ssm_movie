@@ -19,6 +19,7 @@ public interface MovieService {
 	 * 根据电影名返回同名的该类电影的pojo集合
 	 */
 	Status getMovieByname(String name);
+	
 	/*
 	 * 返回点击量最大的部分电影pojo集合
 	 */
