@@ -1,5 +1,9 @@
 package commons;
 
+import java.util.List;
+
+import pojo.movie.MoviePojo;
+
 /**
  * @author chuyunfei
  * @date: 2018/3/30
@@ -44,6 +48,14 @@ public class Status {
 
 	public void setData(Object data) {
 		this.data = data;
+	}
+	
+	public Status check(Object object){
+		if (object != null&&object.equals("")) {
+			return new Status(1, "获取成功", object);
+		} else {
+			return new Status(0, "获取失败", null);
+		}
 	}
 
 	@Override

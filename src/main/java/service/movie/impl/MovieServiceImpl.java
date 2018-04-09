@@ -29,40 +29,22 @@ public class MovieServiceImpl implements MovieService {
 			int is_vip_movie,String otherType) {
 
 		movieList = movieDao.getMovieByDifferentType(category, country, release_time, is_vip_movie,otherType);
-		if (movieList != null) {
-			return new Status(1, "获取成功", movieList);
-		} else {
-			return new Status(0, "获取失败", null);
-		}
+		return new Status().check(movieList);
 	}
 
 	public Status getMovieByname(String name) {
 		movieList=movieDao.getMovieByname(name);
-		if (movieList != null) {
-			return new Status(1, "获取成功", movieList);
-		} else {
-			return new Status(0, "获取失败", null);
-		}
+		return new Status().check(movieList);
 	}
 
-	@Override
 	public Status getRanklist() {
 		movieList=movieDao.getRanklist();
-		if (movieList != null) {
-			return new Status(1, "获取成功", movieList);
-		} else {
-			return new Status(0, "获取失败", null);
-		}
+		return new Status().check(movieList);
 	}
 
-	@Override
 	public Status getMovieByID(int id) {
 		moviePojo=movieDao.getMovieByID(id);
-		if (moviePojo != null) {
-			return new Status(1, "获取成功", moviePojo);
-		} else {
-			return new Status(0, "获取失败", null);
-		}
+		return new Status().check(moviePojo);
 	}
 
 }
