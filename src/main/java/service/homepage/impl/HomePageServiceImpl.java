@@ -20,7 +20,6 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
 	 * 获得轮播的电影集合
-	 * @see service.demo.HomePageService#getPlayRound()
 	 */
 	@Override
 	public List<MoviePojo> getPlayRound() {
@@ -35,7 +34,6 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
      * 根据电影类型返回推荐的电影集合
-     * @see service.demo.HomePageService#getMovieNameByType(java.lang.String)
      */
 	@Override
 	public List<MoviePojo> getMovieByType(String movieType) {
@@ -56,7 +54,6 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
 	 * 获取今日热门的电影集合
-	 * @see service.demo.HomePageService#getHotOfToday()
 	 */
 	@Override
 	public List<MoviePojo> getHotOfToday() {
@@ -71,7 +68,7 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
 	 * 登录检测
-	 * @see service.demo.UserService#logincheck(pojo.demo.UserNameAndPwd)
+	 *
 	 */
 	@Override
 	public User logincheck(UserNameAndPwd userNameAndPwd) {
@@ -86,7 +83,7 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
 	 * 用户注册
-	 * @see service.demo.UserService#register(pojo.demo.UserNameAndPwd)
+	 *
 	 */
 	@Override
 	public int register(UserNameAndPwd userNameAndPwd) {
@@ -101,7 +98,7 @@ public class HomePageServiceImpl implements HomePageService {
 
 	/*
 	 * 根据userID获取user的观看历史
-	 * @see service.demo.HomePageService#getWatched(int)
+	 *
 	 */
 	@Override
 	public List<String> getWatched(int userID) {
@@ -112,6 +109,36 @@ public class HomePageServiceImpl implements HomePageService {
 			return null;
 		}
 		return list;
+	}
+
+	/*
+	 * 是否存在此用户
+	 * 
+	 */
+	@Override
+	public int IscontainsThisUser(String user_name) {
+		int result=0;
+		try{
+			result=homePageDao.IscontainsThisUser(user_name);
+		}catch (Exception e) {
+			return 0;
+		}
+		return result;
+	}
+	
+	/*
+	 * 更新用户密码，用于密码找回
+	 * 
+	 */
+	@Override
+	public int updatePassword(String user_password,String user_name) {
+		int result=0;
+		try{
+			result=homePageDao.updatePassword(user_password,user_name);
+		}catch (Exception e) {
+			return 0;
+		}
+		return result;
 	}
 
 }
