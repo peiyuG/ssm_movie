@@ -70,7 +70,7 @@ public class HomePageControllerImpl implements HomePageController {
 	/*
 	 * 根据电影类型查找电影，并返回电影集合
 	 */
-	@RequestMapping(value="/MovieNameByType")
+	@RequestMapping(value="/MovieByType")
 	@ResponseBody
 	public Status getMovieByType(String movieType){
 		List<MoviePojo> list=homePageService.getMovieByType(movieType);
