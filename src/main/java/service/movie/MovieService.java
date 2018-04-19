@@ -29,4 +29,9 @@ public interface MovieService {
 	 * 根据电影ID返回该电影的单个pojo
 	 */
 	Status getMovieByID(int id);
+
+	/*
+	 * 返回部分国家电影点击量最大的前8个电影数据，用于“热播榜”
+	 */
+	public Status getMovieByType();
 }

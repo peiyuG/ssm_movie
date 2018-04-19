@@ -31,6 +31,11 @@ public interface MovieController {
 	 * 根据电影ID返回该电影所有信息
 	 */
 	Status getMovieByID(int id);
+	
+	/*
+	 * 返回部分国家电影点击量最大的前8个电影数据，用于“热播榜”
+	 */
+	public Status getMovieByType();
 
 	Status error() throws RequestStatusException;
 

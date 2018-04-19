@@ -69,5 +69,12 @@ public class MovieControllerImpl implements MovieController {
 		status = movieService.getMovieByID(id);
 		return status;
 	}
+	
+	@RequestMapping("/getMovieByType")
+	@ResponseBody
+	public Status getMovieByType() {
+		status = movieService.getMovieByType();
+		return status;
+	}
 
 }

@@ -52,6 +52,17 @@
 		from t_movie where id=#{id}
 	</select>
 
+     <!-- 返回部分国家电影点击量最大的前8个电影数据，用于“热播榜” -->
+	<select id="getMovieByType" resultMap="MovieDaoMap">
+		select
+		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
+		from t_movie
+		where 
+		country=#{country}
+		order by click_volume desc
+		limit 8;
+	</select>
+
 	<resultMap id="MovieDaoMap" type="pojo.movie.MoviePojo">
 		<id property="id" column="id" />
 		<result property="name" column="name" />

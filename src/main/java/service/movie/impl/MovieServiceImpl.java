@@ -1,6 +1,9 @@
 package service.movie.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,12 @@ public class MovieServiceImpl implements MovieService {
 	
 	private MoviePojo moviePojo;
 	private List<MoviePojo> movieList;
+    private Map<String ,List<MoviePojo>> LL;
+	
+	public MovieServiceImpl() {
+		movieList=new ArrayList<>();
+		LL=new HashMap<>();
+	}
 
 	public Status getMovieByDifferentType(String category, String country, String release_time,
 			int is_vip_movie,String otherType) {
@@ -47,4 +56,12 @@ public class MovieServiceImpl implements MovieService {
 		return new Status().check(moviePojo);
 	}
 
+	public Status getMovieByType(){
+		String [] str={"美国","中国","英国","法国","韩国","香港"};
+		for(int i=0;i<str.length-1;i++){
+			movieList=movieDao.getMovieByType(str[i]);
+			LL.put(str[i], movieList);
+		}
+		return new Status().check(LL);
+	}
 }

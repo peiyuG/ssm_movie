@@ -33,9 +33,14 @@ public interface MovieDao {
 	 */
 	
 	List<MoviePojo> getRanklist();
+	
 	/*
 	 * 根据电影ID返回该电影的单个pojo
 	 */
-	
 	MoviePojo getMovieByID(@Param("id")int id);
+	
+	/*
+	 * 返回部分国家电影点击量最大的前8条数据
+	 */
+	List<MoviePojo> getMovieByType(String country);
 }
