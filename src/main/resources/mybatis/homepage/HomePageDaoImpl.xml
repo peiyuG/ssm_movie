@@ -46,13 +46,13 @@
     </select>
     
     <!-- 登陆检测 -->
-    <select id="logincheck" parameterType="pojo.demo.UserNameAndPwd" resultType="pojo.user.User">
+    <select id="logincheck" parameterType="pojo.user.UserNameAndPwd" resultType="pojo.user.User">
       select userID,user_name,user_password,user_status 
       from user where user_name=#{user_name} and user_password=#{user_password} 
     </select>
     
     <!-- 用户注册 -->
-    <insert id="register" parameterType="pojo.demo.UserNameAndPwd">
+    <insert id="register" parameterType="pojo.user.UserNameAndPwd">
       insert into user(user_name,user_password) values(#{user_name},#{user_password})
     </insert>
     

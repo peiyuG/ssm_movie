@@ -39,12 +39,12 @@ public class MovieControllerImpl implements MovieController {
 
 	@RequestMapping("/getMovieByDifferentType")
 	@ResponseBody
-	public Status getMovieByDifferentType(Integer startPage, Integer PageSize, String category, String country,
+	public Status getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
 			String release_time, int is_vip_movie, String otherType) {
         
 		//分页插件的使用
-		PageHelper.startPage(startPage, PageSize);
-		status = movieService.getMovieByDifferentType(category, country, release_time, is_vip_movie, otherType);
+		PageHelper.startPage(pageNum, pageSize);
+		status = movieService.getMovieByDifferentType(pageNum,pageSize,category, country, release_time, is_vip_movie, otherType);
 		return status;
 		
 	}
