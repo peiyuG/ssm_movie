@@ -10,16 +10,16 @@
 		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume
 		from t_movie
 		<where>
-			<if test='category!=null and category!=""'>
+			<if test='category!="全部"'>
 				and category REGEXP #{category}
 			</if>
-			<if test='country!=null and country!=""'>
+			<if test='country!="全部"'>
 				and country=#{country}
 			</if>
-			<if test='release_time!=null and release_time!=""'>
+			<if test='release_time!="全部"'>
 				and release_time=#{release_time}
 			</if>
-			<if test='is_vip_movie==1 and is_vip_movie==0'>
+			<if test='is_vip_movie!=2'>
 				and is_vip_movie=#{is_vip_movie}
 			</if>
 		</where>
@@ -52,7 +52,7 @@
 		from t_movie where id=#{id}
 	</select>
 
-     <!-- 返回部分国家电影点击量最大的前8个电影数据，用于“热播榜” -->
+    <!-- 返回部分国家电影点击量最大的前8个电影数据，用于“热播榜” -->
 	<select id="getMovieByType" resultMap="MovieDaoMap">
 		select
 		name,score,category,intro,url,id,country,release_time,is_vip_movie,click_volume

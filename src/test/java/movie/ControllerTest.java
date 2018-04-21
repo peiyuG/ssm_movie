@@ -33,10 +33,16 @@ public class ControllerTest {
  
 	@Test
 	public void getMovieTest() throws Exception {
-		String responseString = mockMvc.perform(post("/movie/getMovieByID") // 请求的url,请求的方法是get
+		String responseString = mockMvc.perform(post("/movie/getMovieByDifferentType") // 请求的url,请求的方法是get
                 .accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED) // 数据的格式
-				.param("id", "1")
+				.param("pageNum", "1")
+				.param("pageSize", "30")
+				.param("category", "全部")
+				.param("country", "全部")
+				.param("release_time", "全部")
+				.param("is_vip_movie", "2")
+				.param("otherType", "最近热播")
 		).andExpect(status().isOk()) // 返回的状态是200
 				.andDo(MockMvcResultHandlers.print()) // 打印出请求和相应的内容
 				.andReturn().getResponse().getContentAsString(); // 将相应的数据转换为字符串
