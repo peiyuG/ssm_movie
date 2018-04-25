@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import commons.PageStatus;
 import commons.Status;
 import dao.movie.MovieDao;
 import pojo.movie.MoviePojo;
@@ -37,12 +38,12 @@ public class MovieServiceImpl implements MovieService {
 		LL = new HashMap<>();
 	}
 
-	public Status getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
+	public PageStatus getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
 			String release_time, int is_vip_movie, String otherType) {
 
 		movieList = movieDao.getMovieByDifferentType(pageNum, pageSize, category, country, release_time, is_vip_movie,
 				otherType);
-		return new Status().MovieCheck(movieList);
+		return new PageStatus().MovieCheck(movieList);
 	}
 
 	public Status getMovieByname(String name) {

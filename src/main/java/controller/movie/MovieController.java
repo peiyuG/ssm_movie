@@ -1,6 +1,7 @@
 package controller.movie;
 
 
+import commons.PageStatus;
 import commons.RequestStatusException;
 import commons.Status;
 import service.movie.MovieService;
@@ -14,7 +15,7 @@ public interface MovieController {
 	/*
 	 * 根据不同类别进行判断，返回该组类别所有电影信息（用于片库）
 	 */
-	public Status getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
+	public PageStatus getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
 			String release_time, int is_vip_movie, String otherType);
 
 	/*

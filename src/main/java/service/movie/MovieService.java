@@ -1,5 +1,6 @@
 package service.movie;
 
+import commons.PageStatus;
 import commons.Status;
 
 /**
@@ -12,7 +13,7 @@ public interface MovieService {
 	/*
 	 * 根据不同类型返回电影pojo集合
 	 */
-	public Status getMovieByDifferentType(Integer pageNum,Integer pageSize,String category, 
+	public PageStatus getMovieByDifferentType(Integer pageNum,Integer pageSize,String category, 
 			String country, String release_time, int is_vip_movie,String otherType);
    
 	/*

@@ -17,18 +17,9 @@ public class Status {
 	/* 用于描述状态信息，比如如果请求出错用于描述错误信息等 */
 	private String message;
 	/* 将用于返回的信息，如果需要返回的话 */
-	private Object data;
-	//将用于返回数据的总量
-	private int totalData;	
+	private Object data;	
 
 	public Status(){};
-
-	public Status(Integer statue, String message, Object data,int totalData) {
-		this.statue = statue;
-		this.message = message;
-		this.data = data;
-	    this.totalData=totalData;
-	}
 
 	public Status(Integer statue, String message, Object data) {
 		this.statue = statue;
@@ -59,14 +50,6 @@ public class Status {
 	public void setData(Object data) {
 		this.data = data;
 	}
-	
-	public int getTotalData() {
-		return totalData;
-	}
-
-	public void setTotalData(int totalData) {
-		this.totalData = totalData;
-	}
 
 	
 	//用于普通数据为空检查
@@ -75,18 +58,6 @@ public class Status {
 			return new Status(1, "获取成功", object);
 		} else {
 			return new Status(0, "获取失败", null);
-		}
-	}
-	
-	//用于分类查询电影数据为空检查与返回
-	public Status MovieCheck(List<MoviePojo> movieList){
-		PageInfo page = new PageInfo(movieList);
-		totalData=(int) page.getTotal();
-		System.out.println(totalData);
-		if(totalData!=0){
-			return new Status(1,"获取成功",movieList,totalData);
-		}else{
-			return new Status(0,"获取失败",null,0);
 		}
 	}
 

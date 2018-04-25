@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 
+import commons.PageStatus;
 import commons.RequestStatusException;
 import commons.Status;
 import controller.movie.MovieController;
@@ -39,13 +40,13 @@ public class MovieControllerImpl implements MovieController {
 
 	@RequestMapping("/getMovieByDifferentType")
 	@ResponseBody
-	public Status getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
+	public PageStatus getMovieByDifferentType(Integer pageNum, Integer pageSize, String category, String country,
 			String release_time, int is_vip_movie, String otherType) {
         
 		//分页插件的使用
 		PageHelper.startPage(pageNum, pageSize);
-		status = movieService.getMovieByDifferentType(pageNum,pageSize,category, country, release_time, is_vip_movie, otherType);
-		return status;
+		PageStatus pageStatus = movieService.getMovieByDifferentType(pageNum,pageSize,category, country, release_time, is_vip_movie, otherType);
+		return pageStatus;
 		
 	}
 
